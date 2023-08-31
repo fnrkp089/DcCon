@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electron App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      #container {
+        width: 300px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <h2>URL 입력</h2>
+      <input
+        type="text"
+        id="urlInput"
+        placeholder="URL을 여기에 입력하세요..."
+      />
+      <button id="startBtn">시작</button>
+    </div>
+
+    <script>
+      const { ipcRenderer } = require("electron");
+
+      function startFetching() {
+        const inputUrl = document.getElementById("urlInput").value;
+        console.log("URL from input:", inputUrl); // 로그 추가: 이 로그를 통해 입력값이 잘 가져와지는지 확인합니다.
+
+        if (inputUrl) {
+          console.log(
+            "Sending message to main process with the URL:",
+            inputUrl
+          ); // 로그 추가
+          ipcRenderer.send("start-fetching", inputUrl);
+        } else {
+          console.log("No URL provided."); // 만약 주소창이 비어있으면 이 로그가 출력될 것입니다.
+        }
+      }
+
+      document
+        .getElementById("startBtn")
+        .addEventListener("click", startFetching);
+    </script>
+  </body>
+</html>
